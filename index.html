@@ -12,7 +12,7 @@
 </head>
 <body>
   <canvas id="confetti-canvas" aria-hidden="true"></canvas>
-  <audio id="bg-music" src="./birthday-song.mp3" autoplay loop preload="none"></audio>
+  <audio id="bg-music" src="./birthday-song.mp3" autoplay loop preload="auto" playsinline></audio>
   <div class="bg-orb orb-1"></div>
   <div class="bg-orb orb-2"></div>
   <div class="bg-orb orb-3"></div>
@@ -45,32 +45,39 @@
 
     <div class="cake-stage reveal delay-3">
       <div class="cake-3d" id="cake-3d">
-        <div class="layer layer-1"></div>
-        <div class="layer layer-2"></div>
-        <div class="layer layer-3"></div>
-        <div class="cake-topper" aria-hidden="true">
-          <span>Happy 15</span>
+        <div class="cake-stand" aria-hidden="true"></div>
+
+        <div class="tier tier-bottom">
+          <div class="tier-top"></div>
+          <div class="icing-drip"></div>
+          <div class="ribbon"></div>
+          <div class="bow"></div>
         </div>
-        <div class="cream-dolls" aria-hidden="true"></div>
-        <div class="choco-drip" aria-hidden="true"></div>
-        <div class="cake-slice" aria-hidden="true"></div>
-        <div class="slice-shadow" aria-hidden="true"></div>
-        <div class="cake-crumbs" aria-hidden="true">
-          <span class="crumb c1"></span>
-          <span class="crumb c2"></span>
-          <span class="crumb c3"></span>
-          <span class="crumb c4"></span>
-          <span class="crumb c5"></span>
+
+        <div class="tier tier-middle">
+          <div class="tier-top"></div>
+          <div class="icing-drip"></div>
+          <div class="ribbon"></div>
+          <div class="bow"></div>
         </div>
-        <div class="cake-berries" aria-hidden="true">
-          <span class="berry b1"></span>
-          <span class="berry b2"></span>
-          <span class="berry b3"></span>
-          <span class="berry b4"></span>
+
+        <div class="tier tier-top-tier">
+          <div class="tier-top"></div>
+          <div class="icing-drip"></div>
+          <div class="sprinkles" aria-hidden="true"></div>
         </div>
-        <div class="cake-sprinkles" aria-hidden="true"></div>
-        <div class="candle"></div>
-        <div class="flame"></div>
+
+        <div class="candles">
+          <div class="candle candle-left">
+            <div class="flame"></div>
+          </div>
+          <div class="candle candle-center">
+            <div class="flame"></div>
+          </div>
+          <div class="candle candle-right">
+            <div class="flame"></div>
+          </div>
+        </div>
       </div>
       <div class="knife-zone">
         <div class="knife" id="knife" role="button" aria-label="Drag knife to cut cake">
@@ -102,7 +109,7 @@
 
   <section id="gallery" class="section">
     <h2 class="section-title reveal">Animated Memory Frames</h2>
-    <p class="section-copy reveal delay-1"><code></code><code></code><code></code></p>
+    <p class="section-copy reveal delay-1"> Amader Pari Koto SUndariiiiiiiiiii Dekhoo Sobaiiii </p>
 
     <div id="photo-grid" class="photo-grid">
       <figure class="photo-slot reveal seq-visible"><img src="photo1.webp" alt="Parimita memory 1" loading="eager" fetchpriority="high" decoding="async" /><figcaption>Memory 01</figcaption></figure>
@@ -134,6 +141,4 @@
   <script src="./script.jsx"></script>
 </body>
 </html>
-
-
 

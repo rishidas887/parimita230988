@@ -24,7 +24,7 @@ document.querySelectorAll('.photo-slot img').forEach((img) => {
 
 const confettiCanvas = document.getElementById('confetti-canvas');
 const ctx = confettiCanvas.getContext('2d');
-const flame = document.querySelector('.flame');
+const flames = Array.from(document.querySelectorAll('.flame'));
 const cake3d = document.getElementById('cake-3d');
 const knife = document.getElementById('knife');
 const knifeHint = document.getElementById('knife-hint');
@@ -99,6 +99,7 @@ function forceBackgroundMusic() {
     return;
   }
   bgMusic.loop = true;
+  bgMusic.volume = 1;
   const playPromise = bgMusic.play();
   if (playPromise && typeof playPromise.catch === 'function') {
     playPromise.catch(() => {});
@@ -106,15 +107,23 @@ function forceBackgroundMusic() {
 }
 
 forceBackgroundMusic();
+window.addEventListener('DOMContentLoaded', forceBackgroundMusic);
 window.addEventListener('load', forceBackgroundMusic);
 window.addEventListener('pageshow', forceBackgroundMusic);
+window.addEventListener('focus', forceBackgroundMusic);
 document.addEventListener('visibilitychange', () => {
   if (!document.hidden) {
     forceBackgroundMusic();
   }
 });
 document.addEventListener('pointerdown', forceBackgroundMusic, { passive: true });
+document.addEventListener('touchstart', forceBackgroundMusic, { passive: true });
+document.addEventListener('keydown', forceBackgroundMusic);
+document.addEventListener('scroll', forceBackgroundMusic, { passive: true });
 bgMusic?.addEventListener('pause', () => {
+  forceBackgroundMusic();
+});
+bgMusic?.addEventListener('ended', () => {
   forceBackgroundMusic();
 });
 
@@ -307,7 +316,7 @@ function runCandleCountdown(onComplete) {
     return;
   }
   countdownActive = true;
-  flame.classList.remove('blown');
+  flames.forEach((item) => item.classList.remove('blown'));
 
   let remaining = 5;
   countdownDisplay.textContent = `Blowing candle in ${remaining}...`;
@@ -318,7 +327,7 @@ function runCandleCountdown(onComplete) {
       return;
     }
     clearInterval(timer);
-    flame.classList.add('blown');
+    flames.forEach((item) => item.classList.add('blown'));
     countdownDisplay.textContent = 'Wish made. Candle blown. Celebrate!';
     burstConfetti(window.innerWidth * 0.5, window.innerHeight * 0.28, 180);
     if (typeof onComplete === 'function') {
@@ -349,6 +358,7 @@ let sequenceTimer;
 
 function resetPhotoSequence(hidePhotos = true) {
   clearInterval(sequenceTimer);
+  photoSequenceRunning = false;
   photoSequenceCompleted = false;
   photoSlots.forEach((slot) => {
     slot.classList.remove('seq-active');
@@ -399,16 +409,17 @@ function runPhotoSequence() {
       document.getElementById('top')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
       runCandleCountdown(enableKnifeMode);
     }
-  }, 1300);
+  }, 1000);
 }
 
 startSlideshowBtn.addEventListener('click', runPhotoSequence);
 window.addEventListener('load', () => {
-  // Show memories immediately on first load.
-  resetPhotoSequence(false);
+  // On first load, start memories as a one-by-one flicker sequence.
+  resetPhotoSequence(true);
   if (!window.location.hash) {
     document.getElementById('gallery')?.scrollIntoView({ behavior: 'auto', block: 'start' });
   }
+  setTimeout(runPhotoSequence, 300);
 });
 
 document.addEventListener('click', (event) => {
