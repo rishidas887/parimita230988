@@ -99,7 +99,6 @@ function forceBackgroundMusic() {
     return;
   }
   bgMusic.loop = true;
-  bgMusic.preload = 'auto';
   const playPromise = bgMusic.play();
   if (playPromise && typeof playPromise.catch === 'function') {
     playPromise.catch(() => {});
@@ -348,13 +347,18 @@ let photoSequenceRunning = false;
 let photoSequenceCompleted = false;
 let sequenceTimer;
 
-function resetPhotoSequence() {
+function resetPhotoSequence(hidePhotos = true) {
   clearInterval(sequenceTimer);
   photoSequenceCompleted = false;
   photoSlots.forEach((slot) => {
     slot.classList.remove('seq-active');
     slot.classList.remove('seq-visible');
-    slot.classList.add('seq-hidden');
+    if (hidePhotos) {
+      slot.classList.add('seq-hidden');
+    } else {
+      slot.classList.add('seq-visible');
+      slot.classList.remove('seq-hidden');
+    }
   });
 }
 
@@ -400,8 +404,11 @@ function runPhotoSequence() {
 
 startSlideshowBtn.addEventListener('click', runPhotoSequence);
 window.addEventListener('load', () => {
-  resetPhotoSequence();
-  setTimeout(runPhotoSequence, 1200);
+  // Show memories immediately on first load.
+  resetPhotoSequence(false);
+  if (!window.location.hash) {
+    document.getElementById('gallery')?.scrollIntoView({ behavior: 'auto', block: 'start' });
+  }
 });
 
 document.addEventListener('click', (event) => {
